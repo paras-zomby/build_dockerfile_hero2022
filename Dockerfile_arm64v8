@@ -54,7 +54,7 @@ RUN cd / && git clone https://github.com/gabime/spdlog.git && mkdir spdlog/build
 	&& cmake .. && make -j 14 && make install && rm -rf /spdlog
 
 # ceres安装（eigen3）
-RUN cd / && git clone https://ceres-solver.googlesource.com/ceres-solver && mkdir ceres-solver/ceres-bin/ && cd ceres-solver/ceres-bin && cmake .. && make -j14 && make test && make install && rm -rf /ceres-solver
+RUN cd / && git clone https://ceres-solver.googlesource.com/ceres-solver && mkdir ceres-solver/ceres-bin/ && cd ceres-solver/ceres-bin && cmake .. && make -j14 && make install && rm -rf /ceres-solver
            
 # zsh安装与配置
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
@@ -72,4 +72,3 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /root

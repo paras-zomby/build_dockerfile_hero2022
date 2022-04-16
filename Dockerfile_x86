@@ -1,10 +1,7 @@
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
-ENV http_proxy "http://127.0.0.1:7890"
-ENV HTTP_PROXY "http://127.0.0.1:7890"
-ENV https_proxy "http://127.0.0.1:7890" 
+ENV HTTP_PROXY "http://127.0.0.1:7890" 
 ENV HTTPS_PROXY "http://127.0.0.1:7890"
-ENV all_proxy "socks5://127.0.0.1:7890"
 
 RUN apt-get -y update && apt-get install -y software-properties-common \
     && add-apt-repository ppa:ubuntu-toolchain-r/test \
@@ -45,23 +42,20 @@ RUN mkdir opencv \
 	&& rm -rf /opencv
 
 # 迈德威视
-WORKDIR /
 COPY MindVisionSDK /MindVisionSDK
 RUN cd /MindVisionSDK && ./install.sh && rm -rf /MindVisionSDK
 
 # fmt安装配置
-WORKDIR /
-RUN git clone http://github.com/fmtlib/fmt.git && mkdir fmt/build && cd fmt/build \
+RUN cd / && git clone http://github.com/fmtlib/fmt.git && mkdir fmt/build && cd fmt/build \
 	&& cmake .. && make -j 8 && make install && rm -rf /fmt
 
 # spdlog手动安装
-WORKDIR /
-RUN git clone https://github.com/gabime/spdlog.git && mkdir spdlog/build && cd spdlog/build \
+RUN cd / && git clone https://github.com/gabime/spdlog.git && mkdir spdlog/build \
+    && cd spdlog/build \
 	&& cmake .. && make -j 8 && make install && rm -rf /spdlog
 
 # ceres安装（eigen3）
-WORKDIR /
-RUN git clone https://ceres-solver.googlesource.com/ceres-solver && mkdir ceres-solver/ceres-bin/ && cd ceres-solver/ceres-bin && cmake .. && make -j8 && make test && make install && rm -rf /ceres-solver
+RUN cd / && git clone https://ceres-solver.googlesource.com/ceres-solver && mkdir ceres-solver/ceres-bin/ && cd ceres-solver/ceres-bin && cmake .. && make -j8 && make install && rm -rf /ceres-solver
            
 # zsh安装与配置
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
@@ -78,5 +72,4 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
     && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /root
+    
