@@ -1,0 +1,4 @@
+Log file created at: 2022/01/11 01:31:04
+Running on machine: XiaoXin
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E0111 01:31:04.907416 30194 MVCAMAPI.cpp:352] CameraInit Failed, err:-18,Version:2.1.0.25,FriendlyName:MV-SUA133GC#0,SN:041081620183

@@ -1,0 +1,4 @@
+Log file created at: 2022/01/11 01:28:20
+Running on machine: XiaoXin
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W0111 01:28:20.537961 29665 MVCameraBase.cpp:98] Device:(name:MV-SUA133GC#0 sn:041081620183)Lost
