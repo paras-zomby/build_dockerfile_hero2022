@@ -99,3 +99,16 @@ you can use it through:
 docker pull zig175/hero2022_x86
 docker pull zig175/hero2022_armv8
 ```
+
+## Using image through scripts
+
+### Create container
+
+```shell
+bash $PROJECT/scripts/create_docker_container.sh \
+      -p [x86/arm] [-n <container_name>]
+```
+
+using `create_docker_container.sh` to create a container.
+- `-p` choose the platform. It can be 'x86' or 'arm'.
+- `-n` [Optional] decide the container name, default is 'hero'.
