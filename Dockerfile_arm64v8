@@ -6,7 +6,7 @@ ENV HTTP_PROXY "http://127.0.0.1:7890"
 ENV HTTPS_PROXY "http://127.0.0.1:7890"
 
 USER root
-RUN apt-get -y remove gcc g++ && apt-get -y autoremove && apt-get -y update \
+RUN apt-get -y update \
     && apt-get install -y apt-utils software-properties-common --fix-missing \
     && add-apt-repository ppa:ubuntu-toolchain-r/test \
     && apt-get -y update && apt-get upgrade -y && apt-get install -y --fix-missing \
@@ -65,6 +65,15 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
     && chsh -s /usr/bin/zsh
+
+# 设置Eigen库的链接
+RUN ln -s /usr/include/eigen3/Eigen /usr/include/Eigen && \
+    ln -s /usr/include/eigen3/unsupported /usr/include/unsupported && \
+# 设置openvino环境变量在zsh启动时刷新
+    echo 'source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh' >> /root/.zshrc && \
+    echo 'export LIBVA_DRIVER_NAME=iHD' >> /root/.zshrc && \
+    echo 'export LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri' >> /root/.zshrc && \
+    echo 'export GST_VAAPI_ALL_DRIVERS=1' >> /root/.zshrc
 
 ENV HTTP_PROXY "" 
 ENV HTTPS_PROXY ""

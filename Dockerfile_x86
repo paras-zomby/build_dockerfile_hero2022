@@ -6,9 +6,9 @@ ENV HTTP_PROXY "http://127.0.0.1:7890"
 ENV HTTPS_PROXY "http://127.0.0.1:7890"
 
 USER root
-RUN apt-get -y remove gcc g++ && apt-get -y autoremove && apt-get -y update \
+RUN apt-get -y autoremove && apt-get -y update \
     && apt-get install -y apt-utils software-properties-common --fix-missing \
-    && add-apt-repository ppa:ubuntu-toolchain-r/test \
+    && add-apt-repository ppa:ubuntu-toolchain-r/test && apt-get -y purge gcc g++ cmake \
     && apt-get -y update && apt-get upgrade -y && apt-get install -y --fix-missing \
     pkg-config \
     g++-11 gcc-11 \
@@ -68,9 +68,21 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 
 # 设置Eigen库的链接
 RUN ln -s /usr/include/eigen3/Eigen /usr/include/Eigen && \
-    ln -s /usr/include/eigen3/unsupported /usr/include/unsupported
+    ln -s /usr/include/eigen3/unsupported /usr/include/unsupported && \
+# 设置openvino环境变量在zsh启动时刷新
+    echo 'source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh' >> /root/.zshrc && \
+    echo 'export LIBVA_DRIVER_NAME=iHD' >> /root/.zshrc && \
+    echo 'export LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri' >> /root/.zshrc && \
+    echo 'export GST_VAAPI_ALL_DRIVERS=1' >> /root/.zshrc && \
+## 设置gcc和g++为默认的编译器，并设置新版cmake
+#    apt-get remove -y gcc-9 g++-9 cmake && apt-get -y autoremove && \
+#    ln -s /usr/bin/g++-11 /usr/bin/g++ && \
+#    ln -s /usr/bin/gcc-11 /usr/bin/gcc && \
+#    ln -s /usr/bin/g++-11 /usr/bin/c++ && \
+#    ln -s /usr/bin/gcc-11 /usr/bin/cc && \
+#    ln -s /usr/local/bin/cmake /usr/bin/cmake
+
 
 ENV HTTP_PROXY "" 
 ENV HTTPS_PROXY ""
 WORKDIR /root   
-
